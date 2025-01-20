@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 
 app.post('/execute', async (req, res) => {
     const { code, language, input } = req.body;
+
     const languageConfig = {
         cpp: {
             image: 'gcc:latest', 
@@ -29,7 +30,11 @@ app.post('/execute', async (req, res) => {
             image: 'openjdk:11',
             file: 'Main.java',
             compileCmd: 'javac Main.java && java Main<input.txt',
-        },
+        }, python: {
+            image: 'python:3.9',
+            file: 'code.py',
+            compileCmd: 'python code.py<input.txt',
+        }
     };
 
     const config = languageConfig[language];
@@ -46,14 +51,16 @@ app.post('/execute', async (req, res) => {
             AttachStdout: true,
             AttachStderr: true,
             AttachStdin:true,
+            Tty:false
         });
 
         await container.start();
         const logs = await container.logs({ stdout: true, stderr: true,AttachStdin:true, follow: true });
-        let output ='';
+        let output ="";
         let errorout = "";
         
-        logs.on('data', chunk => output += chunk.toString('utf-8'));
+        logs.on('data', chunk => output += chunk.toString().replace(/\u0001.*?\u0000/g, '')
+        .replace(/\r\n/g, '\n').trim());
         await new Promise(resolve => logs.on('end', resolve));
         res.json({ output: output.trim() });
         console.log(output.trim());

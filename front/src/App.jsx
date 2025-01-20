@@ -1,6 +1,7 @@
 import './App.css';
 import Editor from '@monaco-editor/react';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
   const [code, setCode] = useState({
@@ -27,7 +28,7 @@ function App() {
         System.out.println("Hello, World!");
     }
     }`,
-    python:`#start coding here...
+    python: `#start coding here...
      print("Hello, World!")
      `,
   });
@@ -35,7 +36,6 @@ function App() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [currentLang, setCurrentLang] = useState('cpp');
-
   // Handle language change
   const handleChange = (event) => {
     const selectedLang = event.target.value;
@@ -45,20 +45,35 @@ function App() {
   const handleEditorChange = (value) => {
     setCode((prevCode) => ({
       ...prevCode,
-      [currentLang]: value, 
+      [currentLang]: value,
     }));
   };
 
   const handleInputChange = (e) => {
-    setInput(e.target.value); 
+    setInput(e.target.value);
   };
 
-  const handleRun = () => {
-    setOutput(`Output: ${input}`);
+
+
+
+  const handleRun = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/execute',
+        { code: code[currentLang], language: currentLang, input: input+'\n' },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      setOutput(response.data.output);
+    } catch (error) {
+      setOutput(`Error: ${error.response ? error.response.data.error : error.message}`);
+    }
   };
-    useEffect(() => {
-    console.log(code[currentLang]);
-  }, [input,code,currentLang]);
+  useEffect(() => {
+    // setSend(code[currentLang])
+    console.log(currentLang);
+  }, [code, currentLang]);
   return (
     <div className="h-screen w-screen bg-black flex justify-center items-center">
       <div className="h-[95vh] w-[95vw] bg-zinc-900 rounded-lg border border-gray-900 shadow-[0_4px_8px_rgba(255,255,255,0.3)] p-4">
@@ -90,36 +105,41 @@ function App() {
         </div>
 
         {/* Code Editor */}
-        <div className="h-80 border border-gray-600 rounded-b-lg shadow-inner border-t-2">
+        <div className="h-85 border border-gray-600 rounded-b-lg shadow-inner border-t-2">
           <Editor
-            height="100%"
-            language={currentLang} 
-            value={code[currentLang]} 
+            height="130%"
+            language={currentLang}
+            value={code[currentLang]}
             theme="vs-dark"
             onChange={handleEditorChange}
           />
         </div>
 
         <div className="flex mt-4 space-x-4">
-          {/* Input */}
-          <div className="flex-1">
-            <h3 className="text-white font-semibold mb-2">Input:</h3>
-            <textarea
-              className="w-full h-24 bg-gray-800 text-white border border-gray-700 rounded p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-              placeholder="Enter input here"
-              value={input}
-              onChange={handleInputChange}
-            ></textarea>
-          </div>
+  {/* Input */}
+  <div className="flex-1">
+    <h3 className="text-white font-semibold mb-2">Input:</h3>
+    <textarea
+      className="w-full h-24 bg-gray-800 text-white border border-gray-700 rounded p-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none overflow-auto"
+      placeholder="Enter input here"
+      value={input}
+      onChange={handleInputChange}
+      style={{ whiteSpace: 'pre-wrap', overflowY: 'auto' }}
+    ></textarea>
+  </div>
 
-          {/* Output */}
-          <div className="flex-1">
-            <h3 className="text-white font-semibold mb-2">Output:</h3>
-            <div className="w-full h-24 bg-gray-800 text-white border border-gray-700 rounded p-2">
-              <pre className="whitespace-pre-wrap">{output}</pre>
-            </div>
-          </div>
-        </div>
+  {/* Output */}
+  <div className="flex-1">
+    <h3 className="text-white font-semibold mb-2">Output:</h3>
+    <div
+      className="w-full h-24 bg-gray-800 text-white border border-gray-700 rounded p-2 overflow-auto"
+      style={{ whiteSpace: 'pre-wrap' }}
+    >
+      <pre className="whitespace-pre-wrap text-l">{output}</pre>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   );
