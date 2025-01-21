@@ -2,7 +2,6 @@ import './App.css';
 import Editor from '@monaco-editor/react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
 function App() {
   const [code, setCode] = useState({
     cpp: `//start coding here...
@@ -29,7 +28,7 @@ function App() {
     }
     }`,
     python: `#start coding here...
-     print("Hello, World!")
+print("Hello, World!")
      `,
   });
 
@@ -52,9 +51,6 @@ function App() {
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
-
-
-
 
   const handleRun = async () => {
     try {
@@ -115,7 +111,7 @@ return (
             onChange={handleEditorChange}
             options={{
               fontSize: 16,
-              minimap: { enabled: false },
+              minimap: { enabled: true },
               scrollBeyondLastLine: false,
               automaticLayout: true
             }}
@@ -128,7 +124,7 @@ return (
           <div className="flex-1">
             <h3 className="text-white font-semibold mb-2">Input:</h3>
             <textarea
-              className="w-full h-[calc(50%-2rem)] bg-gray-800 text-white border border-gray-700 rounded-md p-3 
+              className="w-full h-[calc(60%-2rem)] bg-gray-800 text-white border border-gray-700 rounded-md p-3 
                         focus:outline-none focus:ring-2 focus:ring-green-500 resize-none font-mono"
               placeholder="Enter input here"
               value={input}
@@ -141,10 +137,10 @@ return (
           <div className="flex-1">
             <h3 className="text-white font-semibold mb-2">Output:</h3>
             <div 
-              className="w-full h-[calc(50%-2rem)] bg-gray-800 text-white border border-gray-700 rounded-md p-3 
+              className="w-full h-[calc(70%-2rem)] bg-gray-800 text-white border border-gray-700 rounded-md p-3 
                        overflow-auto font-mono"
             >
-              <pre className="whitespace-pre-wrap text-sm">{output}</pre>
+              <pre className="whitespace-pre-wrap text-left text-sm">{output}</pre>
             </div>
           </div>
         </div>
