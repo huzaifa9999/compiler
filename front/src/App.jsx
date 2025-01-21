@@ -74,75 +74,84 @@ function App() {
     // setSend(code[currentLang])
     console.log(currentLang);
   }, [code, currentLang]);
-  return (
-    <div className="h-screen w-screen bg-black flex justify-center items-center">
-      <div className="h-[95vh] w-[95vw] bg-zinc-900 rounded-lg border border-gray-900 shadow-[0_4px_8px_rgba(255,255,255,0.3)] p-4">
-        {/* Header */}
-        <div className="flex justify-between items-center bg-slate-700 p-3 rounded-t-lg">
-          <div className="text-lg font-bold text-white">
-            <div className="w-full max-w-xs mx-auto flex">
-              <label htmlFor="languages" className="block text-gray-300 text-sm font-medium mb-1">
-                Programming Language
-              </label>
-              <select
-                id="languages"
-                value={currentLang}
-                onChange={handleChange}
-                className="block w-[50%] px-1 py-1 bg-gray-700 text-white text-sm border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="cpp">C++</option>
-                <option value="javascript">JavaScript</option>
-                <option value="java">Java</option>
-                <option value="python">Python</option>
-              </select>
-            </div>
-          </div>
-          <div className="flex space-x-1">
-            <button className="px-4 py-1 bg-green-600 hover:bg-green-700 text-white rounded" onClick={handleRun}>
-              Run
-            </button>
-          </div>
+return (
+  <div className="h-screen w-screen bg-black p-4">
+    <div className="h-full w-full bg-zinc-900 rounded-lg border border-gray-900 shadow-[0_4px_8px_rgba(255,255,255,0.3)] flex flex-col">
+      {/* Header */}
+      <div className="flex justify-between items-center bg-slate-700 p-3 rounded-t-lg">
+        <div className="flex items-center space-x-4">
+          <label htmlFor="languages" className="text-gray-300 text-sm font-medium">
+            Programming Language
+          </label>
+          <select
+            id="languages"
+            value={currentLang}
+            onChange={handleChange}
+            className="w-32 px-2 py-1 bg-gray-700 text-white text-sm border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            <option value="cpp">C++</option>
+            <option value="javascript">JavaScript</option>
+            <option value="java">Java</option>
+            <option value="python">Python</option>
+          </select>
         </div>
+        <button 
+          className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition-colors"
+          onClick={handleRun}
+        >
+          Run
+        </button>
+      </div>
 
-        {/* Code Editor */}
-        <div className="h-85 border border-gray-600 rounded-b-lg shadow-inner border-t-2">
+      {/* Main Content Area */}
+      <div className="flex flex-1 h-[calc(100%-4rem)] overflow-hidden">
+        {/* Editor Section - Left Side */}
+        <div className="w-2/3 border-r border-gray-700">
           <Editor
-            height="130%"
+            height="100%"
             language={currentLang}
             value={code[currentLang]}
             theme="vs-dark"
             onChange={handleEditorChange}
+            options={{
+              fontSize: 16,
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              automaticLayout: true
+            }}
           />
         </div>
 
-        <div className="flex mt-4 space-x-4">
-  {/* Input */}
-  <div className="flex-1">
-    <h3 className="text-white font-semibold mb-2">Input:</h3>
-    <textarea
-      className="w-full h-24 bg-gray-800 text-white border border-gray-700 rounded p-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none overflow-auto"
-      placeholder="Enter input here"
-      value={input}
-      onChange={handleInputChange}
-      style={{ whiteSpace: 'pre-wrap', overflowY: 'auto' }}
-    ></textarea>
-  </div>
+        {/* Input/Output Section - Right Side */}
+        <div className="w-1/3 flex flex-col p-4 space-y-4">
+          {/* Input Box */}
+          <div className="flex-1">
+            <h3 className="text-white font-semibold mb-2">Input:</h3>
+            <textarea
+              className="w-full h-[calc(50%-2rem)] bg-gray-800 text-white border border-gray-700 rounded-md p-3 
+                        focus:outline-none focus:ring-2 focus:ring-green-500 resize-none font-mono"
+              placeholder="Enter input here"
+              value={input}
+              onChange={handleInputChange}
+              style={{ whiteSpace: 'pre-wrap' }}
+            />
+          </div>
 
-  {/* Output */}
-  <div className="flex-1">
-    <h3 className="text-white font-semibold mb-2">Output:</h3>
-    <div
-      className="w-full h-24 bg-gray-800 text-white border border-gray-700 rounded p-2 overflow-auto"
-      style={{ whiteSpace: 'pre-wrap' }}
-    >
-      <pre className="whitespace-pre-wrap text-l">{output}</pre>
-    </div>
-  </div>
-</div>
-
+          {/* Output Box */}
+          <div className="flex-1">
+            <h3 className="text-white font-semibold mb-2">Output:</h3>
+            <div 
+              className="w-full h-[calc(50%-2rem)] bg-gray-800 text-white border border-gray-700 rounded-md p-3 
+                       overflow-auto font-mono"
+            >
+              <pre className="whitespace-pre-wrap text-sm">{output}</pre>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default App;
