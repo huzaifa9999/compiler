@@ -37,9 +37,9 @@ const compiler = async (req, res) => {
         let output = "";
 
         logs.on('data', chunk => output += chunk.toString().replace(/\u0001.*?\u0000/g, '') // Remove unwanted sequences
-        .replace(/[^\x20-\x7E\n]/g, '')  // Remove non-printable ASCII except \n
-        .replace(/\r\n/g, '\n')          // Normalize line endings
-        .trim());
+            .replace(/[^\x20-\x7E\n]/g, '')  // Remove non-printable ASCII except \n
+            .replace(/\r\n/g, '\n')          // Normalize line endings
+            .trim());
 
         const timeout = setTimeout(async () => {
             isTLE = true;
@@ -65,14 +65,13 @@ const compiler = async (req, res) => {
             res.json({ output: output.trim() });
 
     }
-    
-    catch (error)
-    {
+
+    catch (error) {
         res.status(500).json({ error: error.message });
-    } 
-    
-    finally 
-    {    
+        
+    }
+
+    finally {
         if (container) {
             try {
                 await container.remove();

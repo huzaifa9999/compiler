@@ -5,10 +5,15 @@ const execute = require("./routes/execute");
 const limiter = require('./middleware/rateLimiter');
 
 const app = express();
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(limiter);
 app.use('/', execute);
+app.use((err, req, res, next) => {
+    console.error("Global error handler:", err);
+    res.status(500).json({ error: err.message || "Internal Server Error" });
+});
 //     const { code, language, input } = req.body;
 
 //     const languageConfig = {

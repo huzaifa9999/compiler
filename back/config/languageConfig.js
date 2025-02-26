@@ -12,7 +12,7 @@ const languageConfig = {
     java: {
         image: 'openjdk:11',
         file: 'Main.java',
-        compileCmd: 'javac Main.java && java Main<input.txt',
+        compileCmd: 'javac Main.java && java -cp . Main<input.txt',
     }, python: {
         image: 'python:3.9',
         file: 'code.py',

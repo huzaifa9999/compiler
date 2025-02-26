@@ -116,12 +116,16 @@ print("Hello, World!")
               <option value="python">Python</option>
             </select>
           </div>
-          <button className="px-3 py-2 bg-rose-800 hover:bg-green-700 text-white rounded transition-colors" onClick={downloadCode}>Download Code</button>
+          <h1 className=" font-semibold text-4xl text-amber-100  ">Welcome to RunInit..!!</h1>
+          <div className='flex justify-evenly items-center'>
           <button
-            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition-colors mr-3"
+            className="px-6 py-2 mr-6 bg-green-600 hover:bg-green-700 text-white rounded transition-colors ml-9"
             onClick={handleRun}>
             Run
           </button>
+
+          <button className="px-3 py-2 ml-3 bg-rose-800 hover:bg-green-700 text-white rounded transition-colors" onClick={downloadCode}>Download Code</button>
+          </div>
 
         </div>
 
