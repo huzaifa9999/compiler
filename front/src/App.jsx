@@ -79,7 +79,7 @@ print("Hello, World!")
 
   const handleRun = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/execute',
+      const response = await axios.post('/execute',
         { code: code[currentLang], language: currentLang, input: input + '\n' },
         {
           headers: {
