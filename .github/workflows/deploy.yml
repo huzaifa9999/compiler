@@ -27,4 +27,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: huzaifa999/runinit
+          tags: huzaifa999/runinit:latest
