@@ -4,6 +4,7 @@ const cors = require('cors');
 const execute = require("./routes/execute");
 const limiter = require('./middleware/rateLimiter');
 const path = require('path');
+const port =process.env.PORT || 3000;
 
 const app = express();
 
@@ -19,5 +20,5 @@ app.get("*", (req, res) => {
 });
 app.use('/', execute);
 
-app.listen(3000, () => console.log('Compiler backend running on port 3000 go check it'));
+app.listen(port, () => console.log('Compiler backend running on port 3000 go check it'));
 
